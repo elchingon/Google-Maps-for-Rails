@@ -55,7 +55,7 @@ class @Gmaps.Google.Builders.Marker extends Gmaps.Objects.BaseBuilder
     @addListener 'click', @infowindow_binding
 
   infowindow_binding: =>
-    @constructor.CURRENT_INFOWINDOW.close() if @_should_close_infowindow()
+    @constructor.OBJECT_CACHE_STORE['infowindow'].close() if @_should_close_infowindow()
     @marker.panTo() unless @internal_options.disableAutoPanTo
     @infowindow ?= @create_infowindow()
 
@@ -63,7 +63,7 @@ class @Gmaps.Google.Builders.Marker extends Gmaps.Objects.BaseBuilder
 
     @infowindow.open( @getServiceObject().getMap(), @getServiceObject())
     @marker.infowindow ?= @infowindow
-    @constructor.CURRENT_INFOWINDOW = @infowindow
+    @constructor.OBJECT_CACHE_STORE['infowindow'] = @infowindow
 
   _get_picture: (picture_name)->
     return null if !_.isObject(@args[picture_name]) || !_.isString(@args[picture_name].url)
@@ -92,7 +92,7 @@ class @Gmaps.Google.Builders.Marker extends Gmaps.Objects.BaseBuilder
     new(@primitives().point)(anchorLocation[0], anchorLocation[1])
 
   _should_close_infowindow: ->
-    @internal_options.singleInfowindow and @constructor.CURRENT_INFOWINDOW?
+    @internal_options.singleInfowindow and @constructor.OBJECT_CACHE_STORE['infowindow']?
 
   _randomized_coordinates: ->
     return [@args.lat, @args.lng] unless _.isNumber(@internal_options.maxRandomDistance)

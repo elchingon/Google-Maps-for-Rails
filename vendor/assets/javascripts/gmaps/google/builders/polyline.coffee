@@ -29,7 +29,7 @@ class @Gmaps.Google.Builders.Polyline extends Gmaps.Objects.BaseBuilder
 
   infowindow_binding: =>
     @constructor.CURRENT_POLYLINE.setOptions({ strokeWeight: 3, strokeOpacity: 1.0 }) if @_should_close_infowindow()
-    @constructor.CURRENT_INFOWINDOW.close() if @_should_close_infowindow()
+    @constructor.CACHE_STORE['infowindow'].close() if @_should_close_infowindow()
     @polyline.panTo(@newCenter()) unless @internal_options.disableAutoPanTo
     @infowindow = @create_infowindow()
     @getServiceObject().setOptions({ strokeWeight: 8, strokeOpacity: 0.7 })
@@ -37,7 +37,7 @@ class @Gmaps.Google.Builders.Polyline extends Gmaps.Objects.BaseBuilder
 
     @infowindow.open( @getServiceObject().getMap(), @polyline)
     @polyline.infowindow ?= @infowindow
-    @constructor.CURRENT_INFOWINDOW = @infowindow
+    @constructor.CACHE_STORE['infowindow'] = @infowindow
     @constructor.CURRENT_POLYLINE = @getServiceObject()
 
   newCenter: =>
@@ -54,7 +54,7 @@ class @Gmaps.Google.Builders.Polyline extends Gmaps.Objects.BaseBuilder
   baseStrokeColor: ->
     if _.isString @args[0].baseStrokeColor
       @args[0].baseStrokeColor
-    else if _.isString @args[0].strokeColor 
+    else if _.isString @args[0].strokeColor
       @args[0].strokeColor
     else
       @polyline_options().baseStrokeColor
@@ -68,7 +68,7 @@ class @Gmaps.Google.Builders.Polyline extends Gmaps.Objects.BaseBuilder
    _should_close_infowindow: ->
     # console.log(@internal_options)
     # @internal_options.singleInfowindow and @constructor.CURRENT_INFOWINDOW?
-    @constructor.CURRENT_INFOWINDOW?
+    @constructor.CACHE_STORE['infowindow']?
 
   _build_path: ->
     _.map @args, (arg)=>

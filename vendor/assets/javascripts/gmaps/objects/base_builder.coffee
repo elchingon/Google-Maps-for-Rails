@@ -1,5 +1,7 @@
 class @Gmaps.Objects.BaseBuilder
 
+  @OBJECT_CACHE_STORE: {}
+
   build: ->
     new(@model_class())(@serviceObject)
 
